@@ -1,0 +1,69 @@
+Create Employee Table with Constraints
+CREATE TABLE Employee(
+    emp_id NUMBER PRIMARY KEY,
+    emp_name VARCHAR2(20) NOT NULL,
+    department VARCHAR2(20) NOT NULL,
+    city VARCHAR2(20),
+    salary NUMBER(8,2) CHECK(salary > 0)
+);
+
+Insert Records
+INSERT INTO Employee VALUES(1,'Amit','IT','Pune',50000);
+INSERT INTO Employee VALUES(2,'Neha','HR','Mumbai',40000);
+INSERT INTO Employee VALUES(3,'Rohit','IT','Pune',70000);
+INSERT INTO Employee VALUES(4,'Seema','Sales','Delhi',55000);
+INSERT INTO Employee VALUES(5,'Pooja','HR','Mumbai',45000);
+INSERT INTO Employee VALUES(6,'Ajay','IT','Pune',80000);
+INSERT INTO Employee VALUES(7,'Riya','Sales','Delhi',65000);
+INSERT INTO Employee VALUES(8,'Ketan','HR','Mumbai',30000);
+INSERT INTO Employee VALUES(9,'Sneha','IT','Pune',90000);
+INSERT INTO Employee VALUES(10,'Aman','Sales','Delhi',60000);
+
+COMMIT;
+
+1) Display Department-wise Total Salary
+SELECT department,
+SUM(salary) AS Total_Salary
+FROM Employee
+GROUP BY department;
+
+2) Display Department-wise Average Salary
+SELECT department,
+AVG(salary) AS Average_Salary
+FROM Employee
+GROUP BY department;
+
+3) City-wise Employee Count Greater Than 3
+SELECT city,
+COUNT(*) AS Total_Employees
+FROM Employee
+GROUP BY city
+HAVING COUNT(*) > 3;
+
+4) Department-wise Maximum Salary Above 60000
+SELECT department,
+MAX(salary) AS Maximum_Salary
+FROM Employee
+GROUP BY department
+HAVING MAX(salary) > 60000;
+
+5) Display Department and City-wise Total Salary
+SELECT department,
+city,
+SUM(salary) AS Total_Salary
+FROM Employee
+GROUP BY department, city;
+
+6) Display Departments Having More Than One Employee
+SELECT department,
+COUNT(*) AS Total_Employees
+FROM Employee
+GROUP BY department
+HAVING COUNT(*) > 1;
+
+7) Display City-wise Employee Count in Descending Order
+SELECT city,
+COUNT(*) AS Total_Employees
+FROM Employee
+GROUP BY city
+ORDER BY Total_Employees DESC;
