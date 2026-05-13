@@ -1,30 +1,62 @@
-1) Create a New User
-CREATE USER Class_div_rollno
-IDENTIFIED BY password;
+/* =========================
+   1. CREATE NEW USER
+   ========================= */
 
-2) Grant SELECT Permission on Employee Table
+CREATE USER Class_div_rollno
+IDENTIFIED BY password123;
+
+
+/* =========================
+   2. GRANT SELECT
+   ON EMPLOYEE TABLE
+   ========================= */
+
 GRANT SELECT
 ON Employee
 TO Class_div_rollno;
 
-3) Grant INSERT and UPDATE Permissions
+
+/* =========================
+   3. GRANT INSERT AND UPDATE
+   ON EMPLOYEE TABLE
+   ========================= */
+
 GRANT INSERT, UPDATE
 ON Employee
 TO Class_div_rollno;
 
-4) Revoke UPDATE Permission from user1
+
+/* =========================
+   4. REVOKE UPDATE
+   FROM user1
+   ========================= */
+
 REVOKE UPDATE
 ON Employee
 FROM user1;
 
-5) Create Role manager_role
+
+/* =========================
+   5. CREATE ROLE
+   ========================= */
+
 CREATE ROLE manager_role;
 
-6) Grant SELECT and DELETE Privileges to manager_role
+
+/* =========================
+   6. GRANT SELECT AND DELETE
+   TO manager_role
+   ========================= */
+
 GRANT SELECT, DELETE
 ON Employee
 TO manager_role;
 
-7) Revoke manager_role from user2
+
+/* =========================
+   7. REVOKE ROLE
+   FROM user2
+   ========================= */
+
 REVOKE manager_role
 FROM user2;
