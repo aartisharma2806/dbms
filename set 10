@@ -1,7 +1,7 @@
 Create Employee Table with Constraints
 CREATE TABLE Employee(
     emp_id NUMBER PRIMARY KEY,
-    emp_name VARCHAR2(20) NOT NULL,
+    emp_name VARCHAR2(20) NOT NULL, 
     department VARCHAR2(20) NOT NULL,
     city VARCHAR2(20),
     salary NUMBER(8,2) CHECK(salary > 0)
