@@ -1,0 +1,73 @@
+Create Department Table
+CREATE TABLE Department(
+    dept_id NUMBER PRIMARY KEY,
+    dept_name VARCHAR2(20),
+    location VARCHAR2(20)
+);
+
+Create Employee Table
+CREATE TABLE Employee(
+    emp_id NUMBER PRIMARY KEY,
+    emp_name VARCHAR2(20),
+    city VARCHAR2(20),
+    salary NUMBER,
+    department NUMBER,
+    FOREIGN KEY(department)
+    REFERENCES Department(dept_id)
+);
+
+1) Display Schema of Each Table
+DESC Department;
+DESC Employee;
+
+2) Insert 10 Records in Each Table
+Insert into Department
+INSERT INTO Department VALUES(1,'IT','Mumbai');
+INSERT INTO Department VALUES(2,'HR','Pune');
+INSERT INTO Department VALUES(3,'Sales','Delhi');
+INSERT INTO Department VALUES(4,'Finance','Nashik');
+INSERT INTO Department VALUES(5,'Marketing','Nagpur');
+INSERT INTO Department VALUES(6,'Admin','Aurangabad');
+INSERT INTO Department VALUES(7,'Support','Mumbai');
+INSERT INTO Department VALUES(8,'Testing','Pune');
+INSERT INTO Department VALUES(9,'Research','Delhi');
+INSERT INTO Department VALUES(10,'Security','Nashik');
+Insert into Employee
+INSERT INTO Employee VALUES(101,'Amit','Mumbai',30000,1);
+INSERT INTO Employee VALUES(102,'Neha','Pune',25000,2);
+INSERT INTO Employee VALUES(103,'Deepak','Delhi',40000,3);
+INSERT INTO Employee VALUES(104,'Seema','Nashik',35000,4);
+INSERT INTO Employee VALUES(105,'Rakesh','Nagpur',28000,5);
+INSERT INTO Employee VALUES(106,'Reena','Aurangabad',45000,1);
+INSERT INTO Employee VALUES(107,'Tejas','Mumbai',32000,7);
+INSERT INTO Employee VALUES(108,'Meena','Pune',27000,8);
+INSERT INTO Employee VALUES(109,'Dev','Delhi',50000,9);
+INSERT INTO Employee VALUES(110,'Ketan','Nashik',38000,10);
+
+COMMIT;
+3) Insert New Department into Department Table
+INSERT INTO Department
+VALUES(11,'Production','Pune');
+
+4) Insert Employee Without Specifying Salary
+INSERT INTO Employee(emp_id, emp_name, city, department)
+VALUES(111,'Rohan','Mumbai',1);
+
+5) Update Salary by Adding 20% Increment
+UPDATE Employee
+SET salary = salary + (salary * 0.20);
+
+6) Display Employee Name and Annual Salary Whose Second Letter is 'e'
+SELECT emp_name, salary*12 AS annual_salary
+FROM Employee
+WHERE emp_name LIKE '_e%';
+
+7) Update City to Pune for Employees Working in IT Department
+UPDATE Employee
+SET city='Pune'
+WHERE department=
+(
+SELECT dept_id
+FROM Department
+WHERE dept_name='IT'
+);
