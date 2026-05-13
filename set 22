@@ -1,0 +1,67 @@
+CREATE TABLE Stud_Marks (
+    name VARCHAR2(50),
+    total_marks NUMBER(5)
+);
+
+
+INSERT INTO Stud_Marks VALUES ('Rahul', 1200);
+INSERT INTO Stud_Marks VALUES ('Vaishali', 950);
+INSERT INTO Stud_Marks VALUES ('Amit', 870);
+INSERT INTO Stud_Marks VALUES ('Sneha', 780);
+
+COMMIT;
+
+
+
+CREATE OR REPLACE PROCEDURE proc_Grade (
+    p_rollno IN NUMBER,
+    p_name IN VARCHAR2,
+    p_marks IN NUMBER
+)
+IS
+    v_class VARCHAR2(50);
+
+BEGIN
+
+    IF p_marks <= 1500 AND p_marks >= 990 THEN
+        v_class := 'Distinction';
+
+    ELSIF p_marks >= 900 AND p_marks <= 989 THEN
+        v_class := 'First Class';
+
+    ELSIF p_marks >= 825 AND p_marks <= 899 THEN
+        v_class := 'Higher Second Class';
+
+    ELSE
+        v_class := 'Fail';
+    END IF;
+
+    DBMS_OUTPUT.PUT_LINE('Roll No : ' || p_rollno);
+    DBMS_OUTPUT.PUT_LINE('Name    : ' || p_name);
+    DBMS_OUTPUT.PUT_LINE('Marks   : ' || p_marks);
+    DBMS_OUTPUT.PUT_LINE('Class   : ' || v_class);
+
+END;
+/
+
+
+SET SERVEROUTPUT ON;
+
+
+
+DECLARE
+    v_rollno NUMBER := 101;
+    v_name VARCHAR2(50);
+    v_marks NUMBER;
+
+BEGIN
+
+    SELECT name, total_marks
+    INTO v_name, v_marks
+    FROM Stud_Marks
+    WHERE name = 'Rahul';
+
+    proc_Grade(v_rollno, v_name, v_marks);
+
+END;
+/
