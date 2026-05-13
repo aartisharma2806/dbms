@@ -1,0 +1,68 @@
+Create Employee Table with Constraints
+CREATE TABLE Employee(
+    emp_id NUMBER PRIMARY KEY,
+    emp_name VARCHAR2(20) NOT NULL,
+    department VARCHAR2(20) NOT NULL,
+    city VARCHAR2(20),
+    salary NUMBER(8,2) CHECK(salary > 0)
+);
+
+Insert Records
+INSERT INTO Employee VALUES(1,'Amit','IT','Pune',70000);
+INSERT INTO Employee VALUES(2,'Neha','HR','Mumbai',45000);
+INSERT INTO Employee VALUES(3,'Rohit','IT','Pune',80000);
+INSERT INTO Employee VALUES(4,'Seema','Sales','Delhi',50000);
+INSERT INTO Employee VALUES(5,'Pooja','HR','Mumbai',60000);
+INSERT INTO Employee VALUES(6,'Ajay','IT','Pune',90000);
+INSERT INTO Employee VALUES(7,'Riya','Sales','Delhi',65000);
+INSERT INTO Employee VALUES(8,'Ketan','HR','Mumbai',30000);
+INSERT INTO Employee VALUES(9,'Sneha','IT','Pune',75000);
+INSERT INTO Employee VALUES(10,'Aman','Sales','Delhi',55000);
+
+COMMIT;
+
+1) Department-wise Total Salary Greater Than 2,00,000
+SELECT department,
+SUM(salary) AS Total_Salary
+FROM Employee
+GROUP BY department
+HAVING SUM(salary) > 200000;
+
+2) Department-wise Average Salary More Than 40,000
+SELECT department,
+AVG(salary) AS Average_Salary
+FROM Employee
+GROUP BY department
+HAVING AVG(salary) > 40000;
+
+3) Display City-wise Number of Employees
+SELECT city,
+COUNT(*) AS Total_Employees
+FROM Employee
+GROUP BY city;
+
+4) Display Department-wise Maximum Salary
+SELECT department,
+MAX(salary) AS Maximum_Salary
+FROM Employee
+GROUP BY department;
+
+5) Display City-wise Average Salary
+SELECT city,
+AVG(salary) AS Average_Salary
+FROM Employee
+GROUP BY city;
+
+6) Department-wise Employee Count Greater Than 3
+SELECT department,
+COUNT(*) AS Total_Employees
+FROM Employee
+GROUP BY department
+HAVING COUNT(*) > 3;
+
+7) Display City-wise Employee Count in Ascending Order
+SELECT city,
+COUNT(*) AS Total_Employees
+FROM Employee
+GROUP BY city
+ORDER BY Total_Employees ASC;
