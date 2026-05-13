@@ -1,4 +1,3 @@
-Create Employee Table
 CREATE TABLE Employee(employee_id NUMBER(6) PRIMARY KEY,
 first_name VARCHAR2(20),
 last_name VARCHAR2(25) NOT NULL, 
@@ -11,7 +10,6 @@ commission_pct NUMBER(2,2),
 manager_id NUMBER(6),   
 department_id NUMBER(4));
 
-Insert Records
 INSERT INTO Employee VALUES
 (101,'Amit','Sharma','amit@gmail.com','9876543210',
 TO_DATE('10-01-2020','DD-MM-YYYY'),
@@ -39,30 +37,25 @@ TO_DATE('01-05-2023','DD-MM-YYYY'),
 
 COMMIT;
 
-1) Highest, Lowest, Sum and Average Salary
 SELECT MAX(salary) AS Highest_Salary,
 MIN(salary) AS Lowest_Salary,
 SUM(salary) AS Total_Salary,
 AVG(salary) AS Average_Salary
 FROM Employee;
 
-2) Number of People with Same Job
 SELECT job_id,
 COUNT(*) AS Total_Employees
 FROM Employee
 GROUP BY job_id;
 
-3) Number of Managers Without Listing Them
 SELECT COUNT(DISTINCT manager_id)
 AS Number_Of_Managers
 FROM Employee;
 
-4) Difference Between Highest and Lowest Salary
 SELECT MAX(salary)-MIN(salary)
 AS DIFFERENCE
 FROM Employee;
 
-5) Manager Number and Lowest Salary Under That Manager
 SELECT manager_id,
 MIN(salary) AS Lowest_Salary
 FROM Employee
