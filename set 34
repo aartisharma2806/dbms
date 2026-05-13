@@ -1,0 +1,150 @@
+/* =================================================
+   SET 34
+   CREATE TABLES
+   ================================================= */
+
+CREATE TABLE Employee (
+    employee_name VARCHAR2(30) PRIMARY KEY,
+    street VARCHAR2(30),
+    city VARCHAR2(30)
+);
+
+CREATE TABLE Works (
+    employee_name VARCHAR2(30),
+    company_name VARCHAR2(50),
+    salary NUMBER(10,2)
+);
+
+CREATE TABLE Company (
+    company_name VARCHAR2(50) PRIMARY KEY,
+    city VARCHAR2(30)
+);
+
+CREATE TABLE Manages (
+    employee_name VARCHAR2(30),
+    manager_name VARCHAR2(30)
+);
+
+
+/* =================================================
+   INSERT SAMPLE RECORDS
+   ================================================= */
+
+INSERT INTO Employee VALUES ('Amit', 'MG Road', 'Pune');
+INSERT INTO Employee VALUES ('Neha', 'FC Road', 'Mumbai');
+INSERT INTO Employee VALUES ('Rohit', 'Park Street', 'Pune');
+INSERT INTO Employee VALUES ('Jones', 'Lake Road', 'Delhi');
+INSERT INTO Employee VALUES ('Seema', 'Main Road', 'Mumbai');
+
+INSERT INTO Company VALUES ('First Bank Corporation', 'Pune');
+INSERT INTO Company VALUES ('Small Bank Corporation', 'Mumbai');
+INSERT INTO Company VALUES ('ABC Tech', 'Delhi');
+
+INSERT INTO Works VALUES ('Amit', 'First Bank Corporation', 15000);
+INSERT INTO Works VALUES ('Neha', 'Small Bank Corporation', 9000);
+INSERT INTO Works VALUES ('Rohit', 'First Bank Corporation', 20000);
+INSERT INTO Works VALUES ('Jones', 'ABC Tech', 12000);
+INSERT INTO Works VALUES ('Seema', 'Small Bank Corporation', 8000);
+
+INSERT INTO Manages VALUES ('Amit', 'Rohit');
+INSERT INTO Manages VALUES ('Neha', 'Seema');
+INSERT INTO Manages VALUES ('Jones', 'Amit');
+
+COMMIT;
+
+
+/* =================================================
+   1. EMPLOYEES WORKING FOR
+   FIRST BANK CORPORATION
+   ================================================= */
+
+SELECT employee_name
+FROM Works
+WHERE company_name = 'First Bank Corporation';
+
+
+/* =================================================
+   2. EMPLOYEE NAMES AND CITIES
+   OF FIRST BANK CORPORATION
+   ================================================= */
+
+SELECT E.employee_name, E.city
+FROM Employee E
+JOIN Works W
+ON E.employee_name = W.employee_name
+WHERE W.company_name = 'First Bank Corporation';
+
+
+/* =================================================
+   3. EMPLOYEE DETAILS WITH
+   SALARY > 10000
+   ================================================= */
+
+SELECT E.employee_name, E.street, E.city
+FROM Employee E
+JOIN Works W
+ON E.employee_name = W.employee_name
+WHERE W.company_name = 'First Bank Corporation'
+AND W.salary > 10000;
+
+
+/* =================================================
+   4. EMPLOYEES LIVING IN SAME CITY
+   AS COMPANY
+   ================================================= */
+
+SELECT E.employee_name
+FROM Employee E
+JOIN Works W
+ON E.employee_name = W.employee_name
+JOIN Company C
+ON W.company_name = C.company_name
+WHERE E.city = C.city;
+
+
+/* =================================================
+   5. EMPLOYEES LIVING IN SAME CITY
+   AND STREET AS MANAGER
+   ================================================= */
+
+SELECT E.employee_name
+FROM Employee E
+JOIN Manages M
+ON E.employee_name = M.employee_name
+JOIN Employee EM
+ON M.manager_name = EM.employee_name
+WHERE E.city = EM.city
+AND E.street = EM.street;
+
+
+/* =================================================
+   6. EMPLOYEES NOT WORKING FOR
+   FIRST BANK CORPORATION
+   ================================================= */
+
+SELECT employee_name
+FROM Works
+WHERE company_name <> 'First Bank Corporation';
+
+
+/* =================================================
+   7. GIVE 10% RAISE TO
+   FIRST BANK CORPORATION
+   ================================================= */
+
+UPDATE Works
+SET salary = salary + (salary * 0.10)
+WHERE company_name = 'First Bank Corporation';
+
+COMMIT;
+
+
+/* =================================================
+   8. DELETE EMPLOYEES OF
+   SMALL BANK CORPORATION
+   ================================================= */
+
+DELETE FROM Works
+WHERE company_name = 'Small Bank Corporation';
+
+COMMIT;
