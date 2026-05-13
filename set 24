@@ -1,0 +1,201 @@
+/* =================================================
+   CREATE DEPARTMENTS TABLE
+   ================================================= */
+
+CREATE TABLE Departments (
+    DEPARTMENT_ID NUMBER(4) PRIMARY KEY,
+    DEPARTMENT_NAME VARCHAR2(30) NOT NULL,
+    MANAGER_ID NUMBER(6),
+    LOCATION_ID NUMBER(4)
+);
+
+
+/* =================================================
+   CREATE EMPLOYEES TABLE
+   ================================================= */
+
+CREATE TABLE Employees (
+    EMPLOYEE_ID NUMBER(6) PRIMARY KEY,
+    FIRST_NAME VARCHAR2(20),
+    LAST_NAME VARCHAR2(25) NOT NULL,
+    EMAIL VARCHAR2(25) NOT NULL,
+    PHONE_NUMBER VARCHAR2(20),
+    HIRE_DATE DATE NOT NULL,
+    JOB_ID VARCHAR2(10) NOT NULL,
+    SALARY NUMBER(8,2),
+    COMMISSION_PCT NUMBER(2,2),
+    MANAGER_ID NUMBER(6),
+    DEPARTMENT_ID NUMBER(4),
+
+    FOREIGN KEY (DEPARTMENT_ID)
+    REFERENCES Departments(DEPARTMENT_ID)
+);
+
+
+/* =================================================
+   INSERT INTO DEPARTMENTS
+   ================================================= */
+
+INSERT INTO Departments VALUES (10, 'SALES', 101, 1001);
+INSERT INTO Departments VALUES (20, 'HR', 102, 1002);
+INSERT INTO Departments VALUES (30, 'IT', 103, 1003);
+INSERT INTO Departments VALUES (40, 'FINANCE', 104, 1004);
+INSERT INTO Departments VALUES (50, 'ADMIN', 105, 1005);
+
+COMMIT;
+
+
+/* =================================================
+   INSERT INTO EMPLOYEES
+   ================================================= */
+
+INSERT INTO Employees
+VALUES
+(101, 'ALLEN', 'Smith', 'ALLEN',
+'9876543210',
+TO_DATE('01-01-2022','DD-MM-YYYY'),
+'SALESMAN',
+3000,
+500,
+201,
+10);
+
+INSERT INTO Employees
+VALUES
+(102, 'MARTIN', 'Jones', 'MARTIN',
+'9876543211',
+TO_DATE('10-02-2022','DD-MM-YYYY'),
+'CLERK',
+2500,
+NULL,
+201,
+20);
+
+INSERT INTO Employees
+VALUES
+(103, 'KING', 'Brown', 'KING',
+'9876543212',
+TO_DATE('15-03-2022','DD-MM-YYYY'),
+'MANAGER',
+5000,
+NULL,
+NULL,
+30);
+
+INSERT INTO Employees
+VALUES
+(104, 'BLAKE', 'Wilson', 'BLAKE',
+'9876543213',
+TO_DATE('20-04-2022','DD-MM-YYYY'),
+'ANALYST',
+4000,
+NULL,
+201,
+40);
+
+INSERT INTO Employees
+VALUES
+(105, 'JONES', 'Taylor', 'JONES',
+'9876543214',
+TO_DATE('25-05-2022','DD-MM-YYYY'),
+'CLERK',
+3500,
+NULL,
+201,
+20);
+
+COMMIT;
+
+
+/* =================================================
+   1. EMPLOYEES WITH SALARY GREATER
+      THAN ANY EMPLOYEE IN DEPT 30
+   ================================================= */
+
+SELECT FIRST_NAME, SALARY
+FROM Employees
+WHERE SALARY > ANY
+(
+    SELECT SALARY
+    FROM Employees
+    WHERE DEPARTMENT_ID = 30
+);
+
+
+/* =================================================
+   2. EMPLOYEES WITH SALARY GREATER
+      THAN ALL EMPLOYEES IN DEPT 20
+   ================================================= */
+
+SELECT FIRST_NAME, SALARY
+FROM Employees
+WHERE SALARY > ALL
+(
+    SELECT SALARY
+    FROM Employees
+    WHERE DEPARTMENT_ID = 20
+);
+
+
+/* =================================================
+   3. EMPLOYEES WORKING IN DEPARTMENTS
+      WHERE JOB IS MANAGER
+   ================================================= */
+
+SELECT *
+FROM Employees
+WHERE DEPARTMENT_ID IN
+(
+    SELECT DEPARTMENT_ID
+    FROM Employees
+    WHERE JOB_ID = 'MANAGER'
+);
+
+
+/* =================================================
+   4. EMPLOYEES WITH SALARY GREATER
+      THAN AVERAGE OF THEIR DEPARTMENT
+   ================================================= */
+
+SELECT E1.FIRST_NAME,
+       E1.SALARY,
+       E1.DEPARTMENT_ID
+FROM Employees E1
+WHERE E1.SALARY >
+(
+    SELECT AVG(E2.SALARY)
+    FROM Employees E2
+    WHERE E1.DEPARTMENT_ID = E2.DEPARTMENT_ID
+);
+
+
+/* =================================================
+   5. EMPLOYEES WITH HIGHEST SALARY
+      IN THEIR DEPARTMENT
+   ================================================= */
+
+SELECT E1.FIRST_NAME,
+       E1.SALARY,
+       E1.DEPARTMENT_ID
+FROM Employees E1
+WHERE E1.SALARY =
+(
+    SELECT MAX(E2.SALARY)
+    FROM Employees E2
+    WHERE E1.DEPARTMENT_ID = E2.DEPARTMENT_ID
+);
+
+
+/* =================================================
+   6. EMPLOYEES HAVING SAME JOB AS
+      AT LEAST ONE EMPLOYEE IN DEPT 20
+   ================================================= */
+
+SELECT FIRST_NAME, JOB_ID
+FROM Employees
+WHERE JOB_ID = ANY
+(
+    SELECT JOB_ID
+    FROM Employees
+    WHERE DEPARTMENT_ID = 20
+);
