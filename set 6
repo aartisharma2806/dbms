@@ -1,74 +1,95 @@
-Create Employees Table
-CREATE TABLE Employees(
-    employee_id NUMBER(6) PRIMARY KEY,
-    first_name VARCHAR2(20),
-    last_name VARCHAR2(25) NOT NULL,
-    email VARCHAR2(25) NOT NULL,
-    phone_number VARCHAR2(20),
-    hire_date DATE NOT NULL,
-    job_id VARCHAR2(10) NOT NULL,
-    salary NUMBER(8,2),
-    commission_pct NUMBER(2,2),
-    manager_id NUMBER(6),
-    department_id NUMBER(4)
+CREATE TABLE Employees (
+    EMPLOYEE_ID NUMBER(6) PRIMARY KEY,
+    FIRST_NAME VARCHAR2(20),
+    LAST_NAME VARCHAR2(25) NOT NULL,
+    EMAIL VARCHAR2(25) NOT NULL,
+    PHONE_NUMBER VARCHAR2(20),
+    HIRE_DATE DATE NOT NULL,
+    JOB_ID VARCHAR2(10) NOT NULL,
+    SALARY NUMBER(8,2),
+    COMMISSION_PCT NUMBER(2,2),
+    MANAGER_ID NUMBER(6),
+    DEPARTMENT_ID NUMBER(4)
 );
-Create Departments Table
-CREATE TABLE Departments(
-    department_id NUMBER(4) PRIMARY KEY,
-    department_name VARCHAR2(30) NOT NULL,
-    manager_id NUMBER(6),
-    location_id NUMBER(4)
+
+CREATE TABLE Departments (
+    DEPARTMENT_ID NUMBER(4) PRIMARY KEY,
+    DEPARTMENT_NAME VARCHAR2(30) NOT NULL,
+    MANAGER_ID NUMBER(6),
+    LOCATION_ID NUMBER(4)
 );
-Insert Sample Records
-Departments
-INSERT INTO Departments VALUES(10,'IT',101,1001);
-INSERT INTO Departments VALUES(20,'HR',102,1002);
-INSERT INTO Departments VALUES(30,'Sales',103,1003);
-Employees
-INSERT INTO Employees VALUES
-(101,'Vaishali','Patil','vpatil@gmail.com','9876543210',
-TO_DATE('10-01-2020','DD-MM-YYYY'),
-'IT_PROG',50000,0.10,201,10);
+
+INSERT INTO Departments VALUES (10, 'HR', 101, 1001);
+INSERT INTO Departments VALUES (20, 'Finance', 102, 1002);
+INSERT INTO Departments VALUES (30, 'IT', 103, 1003);
 
 INSERT INTO Employees VALUES
-(102,'Amit','Sharma','amit@gmail.com','9876543211',
-TO_DATE('15-02-2021','DD-MM-YYYY'),
-'HR_MGR',40000,0.05,202,20);
+(101, 'Vaishali', 'Sharma', 'vaishali@gmail.com',
+'9876543210', TO_DATE('2022-01-10','YYYY-MM-DD'),
+'HR01', 50000, 0.10, 201, 10);
 
 INSERT INTO Employees VALUES
-(103,'Neha','Joshi','neha@gmail.com','9876543212',
-TO_DATE('20-03-2022','DD-MM-YYYY'),
-'SALESMAN',45000,0.08,203,30);
-1) Create EmpTest from Employees Table
+(102, 'Rahul', 'Patil', 'rahul@gmail.com',
+'9123456780', TO_DATE('2021-03-15','YYYY-MM-DD'),
+'FIN01', 60000, 0.15, 202, 20);
+
+INSERT INTO Employees VALUES
+(103, 'Amit', 'Joshi', 'amit@gmail.com',
+'9988776655', TO_DATE('2020-07-20','YYYY-MM-DD'),
+'IT01', 70000, 0.20, 203, 30);
+
+COMMIT;
+
 CREATE TABLE EmpTest AS
 SELECT * FROM Employees;
 
 
-2) Add New Row into EmpTest
-INSERT INTO EmpTest
-(employee_id, first_name, salary)
+INSERT INTO EmpTest (EMPLOYEE_ID, FIRST_NAME, SALARY,
+LAST_NAME, EMAIL, HIRE_DATE, JOB_ID)
 VALUES
-(104, USER, 30000);
+(104, USER, 45000,
+'Default', 'default@gmail.com',
+SYSDATE, 'TEMP01');
 
-3) Increase Salary of Vaishali by 15% and Confirm Changes
-UPDATE EmpTest
-SET salary = salary + (salary*0.15)
-WHERE first_name='Vaishali';
-COMMIT;
+SELECT * FROM EmpTest;
 
-4) Increase Salary by 10% for Employees Working in PUNE
 
 UPDATE EmpTest
-SET salary = salary + (salary*0.10)
-WHERE department_id = 10;
+SET SALARY = SALARY + (SALARY * 0.15)
+WHERE FIRST_NAME = 'Vaishali';
 
-5) Delete All Commission Data
+SELECT FIRST_NAME, SALARY
+FROM EmpTest
+WHERE FIRST_NAME = 'Vaishali';
+
+
 UPDATE EmpTest
-SET commission_pct = NULL;
+SET SALARY = SALARY + (SALARY * 0.10)
+WHERE EMPLOYEE_ID IN (
+    SELECT E.EMPLOYEE_ID
+    FROM Employees E
+    JOIN Departments D
+    ON E.DEPARTMENT_ID = D.DEPARTMENT_ID
+    WHERE D.LOCATION_ID = 1003
+);
 
-6) Delete Employees in Dept No 10 Without Commit
+SELECT EMPLOYEE_ID, FIRST_NAME, SALARY
+FROM EmpTest;
+
+
+UPDATE EmpTest
+SET COMMISSION_PCT = NULL;
+
+SELECT EMPLOYEE_ID, COMMISSION_PCT
+FROM EmpTest;
+
+
 DELETE FROM EmpTest
-WHERE department_id = 10;
+WHERE DEPARTMENT_ID = 10;
 
-7) Rollback Changes
+SELECT * FROM EmpTest;
+
+
 ROLLBACK;
+
+SELECT * FROM EmpTest;
