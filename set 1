@@ -32,36 +32,31 @@ CREATE TABLE Participated (
     PRIMARY KEY (driver_id, report_no),
     FOREIGN KEY (driver_id) REFERENCES Person(driver_id)
 );
-Insert 5 Records
--- Person
+
 INSERT INTO Person VALUES (1, 'Amit Sharma', 'Pune');
 INSERT INTO Person VALUES (2, 'Rahul Patil', 'Mumbai');
 INSERT INTO Person VALUES (3, 'Sneha Joshi', 'Nashik');
 INSERT INTO Person VALUES (4, 'Priya Singh', 'Delhi');
 INSERT INTO Person VALUES (5, 'Rohan Mehta', 'Nagpur');
 
--- Car
 INSERT INTO Car VALUES ('MH12AB1234', 'Honda City', 2020);
 INSERT INTO Car VALUES ('MH14CD5678', 'Hyundai i20', 2019);
 INSERT INTO Car VALUES ('MH15EF9012', 'Maruti Swift', 2021);
 INSERT INTO Car VALUES ('DL01GH3456', 'Toyota Innova', 2018);
 INSERT INTO Car VALUES ('MH31IJ7890', 'Tata Nexon', 2022);
 
--- Accident
 INSERT INTO Accident VALUES (101, TO_DATE('2025-01-10','YYYY-MM-DD'), 'Pune');
 INSERT INTO Accident VALUES (102, TO_DATE('2025-02-15','YYYY-MM-DD'), 'Mumbai');
 INSERT INTO Accident VALUES (103, TO_DATE('2025-03-05','YYYY-MM-DD'), 'Nashik');
 INSERT INTO Accident VALUES (104, TO_DATE('2025-03-20','YYYY-MM-DD'), 'Delhi');
 INSERT INTO Accident VALUES (105, TO_DATE('2025-04-01','YYYY-MM-DD'), 'Nagpur');
 
--- Owns
 INSERT INTO Owns VALUES (1, 'MH12AB1234');
 INSERT INTO Owns VALUES (2, 'MH14CD5678');
 INSERT INTO Owns VALUES (3, 'MH15EF9012');
 INSERT INTO Owns VALUES (4, 'DL01GH3456');
 INSERT INTO Owns VALUES (5, 'MH31IJ7890');
 
--- Participated
 INSERT INTO Participated VALUES (1, 'Honda City', 101, 25000);
 INSERT INTO Participated VALUES (2, 'Hyundai i20', 102, 15000);
 INSERT INTO Participated VALUES (3, 'Maruti Swift', 103, 10000);
@@ -69,29 +64,29 @@ INSERT INTO Participated VALUES (4, 'Toyota Innova', 104, 30000);
 INSERT INTO Participated VALUES (5, 'Tata Nexon', 105, 20000);
 
 COMMIT;
-2) Display Schema of Each Table
+
 DESC Person;
 DESC Car;
 DESC Accident;
 DESC Owns;
 DESC Participated;
-3) Display All Records from Person Table
+
 SELECT * FROM Person;
-4) Add Foreign Key Constraint
+
 ALTER TABLE Participated
 ADD CONSTRAINT fk_report
 FOREIGN KEY (report_no)
 REFERENCES Accident(report_no);
-5) Add CHECK Constraint
+
 ALTER TABLE Participated
 ADD CONSTRAINT chk_damage
 CHECK (damage_amount >= 0);
-6) Make name Column NOT NULL
+
 ALTER TABLE Person
 MODIFY name VARCHAR2(50) NOT NULL;
-7) Rename Car Table to Vehicle
+
 RENAME Car TO Vehicle;
-8) Create new_person Table and Drop It
+
 CREATE TABLE new_person AS
 SELECT * FROM Person;
 
