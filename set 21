@@ -1,0 +1,51 @@
+
+CREATE TABLE Employee (
+    emp_id NUMBER PRIMARY KEY,
+    emp_name VARCHAR2(50),
+    salary NUMBER(10,2)
+);
+
+
+
+INSERT INTO Employee VALUES (101, 'Rahul', 50000);
+INSERT INTO Employee VALUES (102, 'Vaishali', 75000);
+INSERT INTO Employee VALUES (103, 'Amit', 65000);
+INSERT INTO Employee VALUES (104, 'Sneha', 90000);
+INSERT INTO Employee VALUES (105, 'Rohit', 55000);
+
+COMMIT;
+
+
+DECLARE
+    CURSOR c_top IS
+        SELECT emp_id, emp_name, salary
+        FROM Employee
+        ORDER BY salary DESC;
+
+    v_empid   Employee.emp_id%TYPE;
+    v_ename   Employee.emp_name%TYPE;
+    v_salary  Employee.salary%TYPE;
+
+    n NUMBER := 3;   -- Top N salaries
+    counter NUMBER := 0;
+
+BEGIN
+    OPEN c_top;
+
+    LOOP
+        FETCH c_top INTO v_empid, v_ename, v_salary;
+
+        EXIT WHEN c_top%NOTFOUND OR counter = n;
+
+        DBMS_OUTPUT.PUT_LINE(
+            'Emp ID: ' || v_empid ||
+            ' Name: ' || v_ename ||
+            ' Salary: ' || v_salary
+        );
+
+        counter := counter + 1;
+    END LOOP;
+
+    CLOSE c_top;
+END;
+/
