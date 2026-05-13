@@ -1,0 +1,130 @@
+/* =================================================
+   SET 28
+   MONGODB COLLECTION QUERIES
+   ================================================= */
+
+/* CREATE DATABASE */
+
+use collegeDB;
+
+
+/* =================================================
+   CREATE COLLECTIONS
+   ================================================= */
+
+/* TEACHERS */
+
+db.Teachers.insertMany([
+{
+    tname:"Amit",
+    dbExperience:5,
+    Salary:15000,
+    Date_of_Joining:"2020-01-10"
+},
+{
+    tname:"Neha",
+    dbExperience:3,
+    Salary:9000,
+    Date_of_Joining:"2021-03-15"
+},
+{
+    tname:"Rohit",
+    dbExperience:8,
+    Salary:20000,
+    Date_of_Joining:"2018-06-20"
+}
+]);
+
+
+/* DEPARTMENTS */
+
+db.Department.insertMany([
+{
+    Dno:1,
+    Dname:"Computer"
+},
+{
+    Dno:2,
+    Dname:"IT"
+}
+]);
+
+
+/* STUDENTS */
+
+db.Students.insertMany([
+{
+    Sname:"xyz",
+    Roll_No:1,
+    Class:"SE"
+},
+{
+    Sname:"Amit",
+    Roll_No:2,
+    Class:"TE"
+},
+{
+    Sname:"Neha",
+    Roll_No:5,
+    Class:"BE"
+},
+{
+    Sname:"Rohit",
+    Roll_No:6,
+    Class:"FE"
+}
+]);
+
+
+/* =================================================
+   2. TEACHERS HAVING SALARY >= 10000
+   ================================================= */
+
+db.Teachers.find({
+    Salary:{$gte:10000}
+});
+
+
+/* =================================================
+   3. STUDENT WITH Roll_No = 2
+      OR Sname = 'xyz'
+   ================================================= */
+
+db.Students.find({
+    $or:[
+        {Roll_No:2},
+        {Sname:"xyz"}
+    ]
+});
+
+
+/* =================================================
+   4. UPDATE STUDENT
+   Roll_No = 5
+   ================================================= */
+
+db.Students.updateOne(
+{
+    Roll_No:5
+},
+{
+    $set:{Class:"TE"}
+}
+);
+
+
+/* =================================================
+   5. DELETE STUDENTS
+   CLASS = 'FE'
+   ================================================= */
+
+db.Students.deleteMany({
+    Class:"FE"
+});
+
+
+/* =================================================
+   6. APPLY INDEX
+   ================================================= */
+
+db.Students.createIndex({Roll_No:1});
