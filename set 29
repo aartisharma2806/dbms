@@ -1,0 +1,97 @@
+/* =================================================
+   SET 29
+   AGGREGATION AND INDEXING
+   ================================================= */
+
+/* CREATE DATABASE */
+
+use collegeDB;
+
+
+/* =================================================
+   CREATE COLLECTION
+   ================================================= */
+
+db.teacher.insertMany([
+{
+    name:"Amit",
+    department:"Computer",
+    experience:5,
+    salary:50000
+},
+{
+    name:"Neha",
+    department:"IT",
+    experience:3,
+    salary:40000
+},
+{
+    name:"Rohit",
+    department:"Computer",
+    experience:8,
+    salary:70000
+},
+{
+    name:"Seema",
+    department:"IT",
+    experience:4,
+    salary:45000
+}
+]);
+
+
+/* =================================================
+   3. DEPARTMENT WISE
+   AVERAGE SALARY
+   ================================================= */
+
+db.teacher.aggregate([
+{
+    $group:{
+        _id:"$department",
+        average_salary:{$avg:"$salary"}
+    }
+}
+]);
+
+
+/* =================================================
+   4. NUMBER OF EMPLOYEES
+   IN EACH DEPARTMENT
+   ================================================= */
+
+db.teacher.aggregate([
+{
+    $group:{
+        _id:"$department",
+        total_employees:{$sum:1}
+    }
+}
+]);
+
+
+/* =================================================
+   5. DEPARTMENT WISE
+   MINIMUM SALARY
+   ================================================= */
+
+db.teacher.aggregate([
+{
+    $group:{
+        _id:"$department",
+        minimum_salary:{$min:"$salary"}
+    }
+}
+]);
+
+
+/* =================================================
+   6. APPLY INDEX
+   ================================================= */
+
+db.teacher.createIndex({department:1});
+
+
+/* DROP INDEX */
+
+db.teacher.dropIndex({department:1});
