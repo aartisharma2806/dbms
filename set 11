@@ -1,58 +1,74 @@
-1) Create dept1 Table
-CREATE TABLE dept1(
+
+CREATE TABLE dept1 (
     deptno NUMBER PRIMARY KEY,
     dname VARCHAR2(30) NOT NULL,
     loc VARCHAR2(30) NOT NULL
 );
 
-2) Add Column mgr in dept1 Table
+
 ALTER TABLE dept1
 ADD mgr NUMBER;
 
-3) Create empl Table
-CREATE TABLE empl(
+
+
+INSERT INTO dept1 VALUES (10, 'HR', 'Pune', 101);
+INSERT INTO dept1 VALUES (20, 'IT', 'Mumbai', 102);
+INSERT INTO dept1 VALUES (30, 'Finance', 'Delhi', 103);
+
+COMMIT;
+
+
+CREATE TABLE empl (
     empno NUMBER,
     ename VARCHAR2(20),
     sal NUMBER(10,2),
     deptno NUMBER
 );
 
-4) Add Constraints on empl Table
-  Add Primary Key on empno
-      ALTER TABLE empl
-      ADD CONSTRAINT pk_emp
-      PRIMARY KEY(empno);
-  Add NOT NULL on ename
-      ALTER TABLE empl
-      MODIFY ename VARCHAR2(20) NOT NULL;
-  Add CHECK Constraint on Salary
-      ALTER TABLE empl
-      ADD CONSTRAINT chk_sal
-      CHECK(sal > 10000);
-  Add Foreign Key on deptno
-      ALTER TABLE empl
-      ADD CONSTRAINT fk_dept
-      FOREIGN KEY(deptno)
-      REFERENCES dept1(deptno);
- 
-5) Create dept11 and emp11 from Existing Tables
-Create dept11
+
+ALTER TABLE empl
+ADD CONSTRAINT empl_pk PRIMARY KEY (empno);
+
+-- Ename not null
+ALTER TABLE empl
+MODIFY ename CONSTRAINT empl_ename_nn NOT NULL;
+
+-- Check salary > 10000
+ALTER TABLE empl
+ADD CONSTRAINT empl_sal_ck CHECK (sal > 10000);
+
+-- Deptno foreign key
+ALTER TABLE empl
+ADD CONSTRAINT empl_dept_fk
+FOREIGN KEY (deptno)
+REFERENCES dept1(deptno);
+
+
+INSERT INTO empl VALUES (101, 'Rahul', 25000, 10);
+INSERT INTO empl VALUES (102, 'Vaishali', 45000, 20);
+INSERT INTO empl VALUES (103, 'Amit', 30000, 30);
+
+COMMIT;
+
+
 CREATE TABLE dept11 AS
 SELECT * FROM dept1;
-Create emp11
+
 CREATE TABLE emp11 AS
 SELECT * FROM empl;
 
-6) Add New Column address
+
 ALTER TABLE empl
 ADD address VARCHAR2(30);
 
-7) Rename sal Column to salary
+
 ALTER TABLE empl
 RENAME COLUMN sal TO salary;
 
-8) Display Constraint Names of empl Table
-SELECT constraint_name,
-constraint_type
+
+SELECT
+    constraint_name,
+    constraint_type,
+    table_name
 FROM user_constraints
-WHERE table_name='EMPL';
+WHERE table_name = 'EMPL';
