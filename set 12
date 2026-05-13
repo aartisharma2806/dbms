@@ -1,0 +1,97 @@
+Create Employees Table
+CREATE TABLE Employees(
+    employee_id NUMBER(6) PRIMARY KEY,
+    first_name VARCHAR2(20),
+    last_name VARCHAR2(25) NOT NULL,
+    email VARCHAR2(25) NOT NULL,
+    phone_number VARCHAR2(20),
+    hire_date DATE NOT NULL,
+    job_id VARCHAR2(10) NOT NULL,
+    salary NUMBER(8,2),
+    commission_pct NUMBER(2,2),
+    manager_id NUMBER(6),
+    department_id NUMBER(4)
+);
+Create Departments Table
+CREATE TABLE Departments(
+    department_id NUMBER(4) PRIMARY KEY,
+    department_name VARCHAR2(30) NOT NULL,
+    manager_id NUMBER(6),
+    location_id NUMBER(4)
+);
+Insert Sample Records
+Departments
+INSERT INTO Departments VALUES(10,'ACCOUNTING',101,1700);
+INSERT INTO Departments VALUES(20,'RESEARCH',102,1800);
+INSERT INTO Departments VALUES(30,'SALES',103,1900);
+INSERT INTO Departments VALUES(40,'HR',104,2000);
+
+COMMIT;
+
+Employees
+INSERT INTO Employees VALUES
+(101,'Amit','Sharma','amit@gmail.com','9876543210',
+TO_DATE('10-01-2020','DD-MM-YYYY'),
+'MANAGER',50000,0.10,NULL,10);
+
+INSERT INTO Employees VALUES
+(102,'Neha','Patil','neha@gmail.com','9876543211',
+TO_DATE('12-02-2021','DD-MM-YYYY'),
+'SALESMAN',30000,0.05,101,30);
+
+INSERT INTO Employees VALUES
+(103,'Rohit','Joshi','rohit@gmail.com','9876543212',
+TO_DATE('15-03-2022','DD-MM-YYYY'),
+'CLERK',25000,0.02,101,20);
+
+INSERT INTO Employees VALUES
+(104,'King','Verma','king@gmail.com','9876543213',
+TO_DATE('20-04-2023','DD-MM-YYYY'),
+'PRESIDENT',70000,NULL,NULL,40);
+
+COMMIT;
+
+1) Display EMPNO, ENAME, SAL, DNAME and LOC using NATURAL JOIN
+SELECT employee_id,
+first_name,
+salary,
+department_name,
+location_id
+FROM Employees
+NATURAL JOIN Departments;
+
+2) Display JOB, MGR, SAL, COMM, DNAME for Employees Whose JOB is SALESMAN
+SELECT job_id,
+manager_id,
+salary,
+commission_pct,
+department_name
+FROM Employees
+JOIN Departments
+ON Employees.department_id = Departments.department_id
+WHERE job_id='SALESMAN';
+
+3) Display ENAME, JOB, DEPTNO and DNAME for Employees Working in DALLAS
+
+Since your table uses location_id instead of LOC, we assume:
+
+1900 = DALLAS
+
+Query:
+
+SELECT first_name,
+job_id,
+Employees.department_id,
+department_name
+FROM Employees
+JOIN Departments
+ON Employees.department_id = Departments.department_id
+WHERE location_id = 1900;
+
+4) Display All Employees Including King (No Manager) Ordered by Employee Number
+SELECT employee_id,
+first_name,
+manager_id,
+salary
+FROM Employees
+ORDER BY employee_id;
