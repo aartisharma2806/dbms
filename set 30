@@ -1,0 +1,95 @@
+/* =================================================
+   SET 30
+   PRODUCT DATABASE
+   ================================================= */
+
+/* 1. CREATE DATABASE */
+
+use product_detail;
+
+
+/* 2. SHOW DATABASE */
+
+show dbs;
+
+
+/* 3. CREATE COLLECTION */
+
+db.createCollection("product");
+
+
+/* 4. SHOW COLLECTION */
+
+show collections;
+
+
+/* =================================================
+   5. INSERT DOCUMENTS
+   ================================================= */
+
+db.product.insertMany([
+{
+    item:"pen",
+    price:10,
+    quantity:2
+},
+{
+    item:"book",
+    price:50,
+    quantity:1
+},
+{
+    item:"pen",
+    price:10,
+    quantity:5
+},
+{
+    item:"pencil",
+    price:5,
+    quantity:10
+}
+]);
+
+
+/* =================================================
+   6. RETRIEVE DOCUMENTS
+   ================================================= */
+
+db.product.find();
+
+
+/* =================================================
+   7. CREATE INDEX
+   ON ITEM ASCENDING
+   ================================================= */
+
+db.product.createIndex({item:1});
+
+
+/* =================================================
+   8. SHOW INDEX
+   ================================================= */
+
+db.product.getIndexes();
+
+
+/* =================================================
+   9. CREATE INDEX
+   PRICE ASCENDING,
+   QUANTITY DESCENDING
+   ================================================= */
+
+db.product.createIndex({
+    price:1,
+    quantity:-1
+});
+
+
+/* =================================================
+   10. DROP INDEX ON PRICE
+   ================================================= */
+
+db.product.dropIndex({
+    price:1,
+    quantity:-1
+});
